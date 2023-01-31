@@ -30,7 +30,19 @@ class RecipeRepository
   def find(id)
     # Executes the SQL query:
     # SELECT id, name, cooking_time, rating FROM recipes WHERE id = $1;
+    sql = 'SELECT id, name, cooking_time, rating FROM recipes WHERE id = $1;'
+    param = [id]
 
+    result_set = DatabaseConnection.exec_params(sql,param)
+
+    record = result_set[0]
+
+    recipe = Recipe.new
+    recipe.id = record['id']
+    recipe.name = record['name']
+    recipe.cooking_time = record['cooking_time']
+    recipe.rating = record['rating']
     # Returns a single Recipe object.
+    return recipe
   end
 end
