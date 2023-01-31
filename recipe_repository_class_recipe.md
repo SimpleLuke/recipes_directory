@@ -65,16 +65,17 @@ Usually, the Model class name will be the capitalised table name (single instead
 
 ```ruby
 # EXAMPLE
-# Table name: students
+# Table name: recipes
 
 # Model class
-# (in lib/student.rb)
-class Student
+# (in lib/recipe.rb)
+class Recipe
+
 end
 
 # Repository class
-# (in lib/student_repository.rb)
-class StudentRepository
+# (in lib/recipe_repository.rb)
+class RecipeRepository
 end
 ```
 
@@ -84,15 +85,15 @@ Define the attributes of your Model class. You can usually map the table columns
 
 ```ruby
 # EXAMPLE
-# Table name: students
+# Table name: recipes
 
 # Model class
-# (in lib/student.rb)
+# (in lib/recipe.rb)
 
-class Student
+class Recipe
 
   # Replace the attributes by your own columns.
-  attr_accessor :id, :name, :cohort_name
+  attr_accessor :id, :name, :cooking_time, :rating
 end
 
 # The keyword attr_accessor is a special Ruby feature
@@ -114,29 +115,29 @@ Using comments, define the method signatures (arguments and return value) and wh
 
 ```ruby
 # EXAMPLE
-# Table name: students
+# Table name: recipes
 
 # Repository class
-# (in lib/student_repository.rb)
+# (in lib/recipe_repository.rb)
 
-class StudentRepository
+class RecipeRepository
 
   # Selecting all records
   # No arguments
   def all
     # Executes the SQL query:
-    # SELECT id, name, cohort_name FROM students;
+    # SELECT id, name, cooking_time, rating FROM recepies;
 
-    # Returns an array of Student objects.
+    # Returns an array of Recipe objects.
   end
 
   # Gets a single record by its ID
   # One argument: the id (number)
   def find(id)
     # Executes the SQL query:
-    # SELECT id, name, cohort_name FROM students WHERE id = $1;
+    # SELECT id, name, cooking_time, rating FROM recipes WHERE id = $1;
 
-    # Returns a single Student object.
+    # Returns a single Recipe object.
   end
 
   # Add more methods below for each operation you'd like to implement.
@@ -159,37 +160,7 @@ Write Ruby code that defines the expected behaviour of the Repository class, fol
 These examples will later be encoded as RSpec tests.
 
 ```ruby
-# EXAMPLES
 
-# 1
-# Get all students
-
-repo = StudentRepository.new
-
-students = repo.all
-
-students.length # =>  2
-
-students[0].id # =>  1
-students[0].name # =>  'David'
-students[0].cohort_name # =>  'April 2022'
-
-students[1].id # =>  2
-students[1].name # =>  'Anna'
-students[1].cohort_name # =>  'May 2022'
-
-# 2
-# Get a single student
-
-repo = StudentRepository.new
-
-student = repo.find(1)
-
-student.id # =>  1
-student.name # =>  'David'
-student.cohort_name # =>  'April 2022'
-
-# Add more examples for each method
 ```
 
 Encode this example as a test.
@@ -201,23 +172,7 @@ Running the SQL code present in the seed file will empty the table and re-insert
 This is so you get a fresh table contents every time you run the test suite.
 
 ```ruby
-# EXAMPLE
 
-# file: spec/student_repository_spec.rb
-
-def reset_students_table
-  seed_sql = File.read('spec/seeds_students.sql')
-  connection = PG.connect({ host: '127.0.0.1', dbname: 'students' })
-  connection.exec(seed_sql)
-end
-
-describe StudentRepository do
-  before(:each) do
-    reset_students_table
-  end
-
-  # (your tests will go here).
-end
 ```
 
 ## 8. Test-drive and implement the Repository class behaviour
